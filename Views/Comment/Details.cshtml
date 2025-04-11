@@ -1,0 +1,54 @@
+﻿@model web.Models.Product
+
+<div class="container">
+    <h2>@Model.Title</h2>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Kitap Bilgileri</h5>
+                    <p><strong>Yazar:</strong> @Model.Author</p>
+                    <p><strong>Kategori:</strong> @Model.Category</p>
+                    <p><strong>Puan:</strong> @Model.Rating / 5</p>
+                    <a href="@Url.Action("Index")" class="btn btn-primary">Kitap Listesine Dön</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Display success or error messages -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-8">
+            <!-- Comment Form -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    Yorum Yap
+                </div>
+                <div class="card-body">
+                    <form asp-action="AddComment" method="post">
+                        <input type="hidden" name="productId" value="@Model.Id" />
+
+                        <div class="form-group mb-3">
+                            <label for="commentText">Yorumunuz:</label>
+                            <textarea class="form-control" id="commentText" name="commentText" rows="3" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Yorum Ekle</button>
+                    </form>
+                </div>
+            </div>

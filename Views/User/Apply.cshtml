@@ -1,0 +1,25 @@
+﻿
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="col-md-4">
+        <h2 class="text-center mb-4">Login</h2>
+        <form asp-action="Apply" method="post" >
+            <div class="mb-3">
+                <label class="form-label">Firstname:</label>
+                <input type="text" name="Firstname" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Lastname:</label>
+                <input type="text" name="Lastname" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Email:</label>
+                <input type="text" name="Email" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Login</button>
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <p class="text-danger text-center mt-3">@ViewBag.ErrorMessage</p>
+            }
+        </form>
+    </div>
+</div>

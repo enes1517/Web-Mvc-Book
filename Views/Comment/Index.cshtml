@@ -1,0 +1,89 @@
+﻿@model IEnumerable<web.Models.Product>
+
+<h2>Kitap Listesi</h2>
+
+<!-- Search and Filter Form -->
+<form asp-action="Index" method="get" class="mb-3">
+    <div class="row">
+        <div class="col-md-3">
+            <input type="text" name="searchTitle" class="form-control" placeholder="Kitap Adı Ara" value="@ViewData["searchTitle"]" />
+        </div>
+        <div class="col-md-3">
+            <input type="text" name="searchAuthor" class="form-control" placeholder="Yazar Adı Ara" value="@ViewData["searchAuthor"]" />
+        </div>
+        <div class="col-md-2">
+            <input type="text" name="filterCategory" class="form-control" placeholder="Kategori" value="@ViewData["filterCategory"]" />
+        </div>
+        <div class="col-md-2">
+            <input type="number" name="filterRating" step="1" min="1" max="5" class="form-control" placeholder="Min Puan" value="@ViewData["filterRating"]" />
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary">Ara/Filtrele</button>
+        </div>
+    </div>
+</form>
+
+<!-- Display messages -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">@item.Title</h5>
+                        <span class="badge bg-primary">@item.Rating/5</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p><strong>Yazar:</strong> @item.Author</p>
+                    <p><strong>Kategori:</strong> @item.Category</p>
+
+                    <hr />
+
+                    <h6>Yorumlar (@(item.Comments?.Count ?? 0))</h6>
+
+                    @if (item.Comments != null && item.Comments.Any())
+                    {
+                        <div class="comments-container mb-3" style="max-height: 200px; overflow-y: auto;">
+                            @foreach (var comment in item.Comments.OrderByDescending(c => c.CreatedAt))
+                            {
+                                <div class="comment border-bottom pb-2 mb-2">
+                                    <p class="mb-1">@comment.Text</p>
+                                    <small class="text-muted">@comment.CreatedAt.ToString("dd.MM.yyyy HH:mm")</small>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">Henüz yorum yapılmamış.</p>
+                    }
+
+                    <!-- Comment Form -->
+                    <form asp-action="AddComment" method="post">
+                        <input type="hidden" name="productId" value="@item.Id" />
+                        <div class="input-group">
+                            <textarea class="form-control" name="commentText" placeholder="Yorumunuz..." required></textarea>
+                            <button class="btn btn-primary" type="submit">Gönder</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+</div>

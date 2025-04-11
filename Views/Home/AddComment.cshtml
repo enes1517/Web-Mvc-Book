@@ -1,0 +1,25 @@
+﻿   <!-- Comments List -->
+<div class="card">
+    <div class="card-header">
+        Yorumlar (@Model.Comments.Count)
+    </div>
+    <div class="card-body">
+        @if (Model.Comments.Any())
+        {
+            foreach (var comment in Model.Comments)
+            {
+                <div class="comment mb-3 pb-3 border-bottom">
+                    <p class="text-muted small">@comment.CreatedAt.ToString("dd.MM.yyyy HH:mm")</p>
+                    <p>@comment.Text</p>
+                </div>
+            }
+        }
+        else
+        {
+            <p>Bu kitap için henüz yorum yapılmamış.</p>
+        }
+    </div>
+</div>
+        </div>
+    </div>
+</div>
